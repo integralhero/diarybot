@@ -23,26 +23,6 @@ app.get('/webhook/', function (req, res) {
     }
     res.send('Error, wrong token')
 })
-
-// Spin up the server
-app.listen(app.get('port'), function() {
-    console.log('running on port', app.get('port'))
-})
-app.post('/webhook/', function (req, res) {
-    messaging_events = req.body.entry[0].messaging
-    for (i = 0; i < messaging_events.length; i++) {
-        event = req.body.entry[0].messaging[i]
-        sender = event.sender.id
-        if (event.message && event.message.text) {
-            text = event.message.text
-            sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
-        }
-    }
-    res.sendStatus(200)
-})
-
-var token = "EAAYJxwknAucBACiPTOPlLzW0HgTWZBp1KaFyFfFcRz26Yf5IZBUHNKilulxjG5YZC9CFdfheLF9gITozBTLsonkUInufqTKmkPdk3JdCDpz4U7eZBb7oNfu8lsUCpzs6ewhZAoozEmq687bUidXplZA0BVl8hJuWAm6KgI7jbBSwZDZD"
-
 function sendTextMessage(sender, text) {
     messageData = {
         text:text
@@ -63,3 +43,23 @@ function sendTextMessage(sender, text) {
         }
     })
 }
+
+// Spin up the server
+app.listen(app.get('port'), function() {
+    console.log('running on port', app.get('port'))
+})
+app.post('/webhook/', function (req, res) {
+    messaging_events = req.body.entry[0].messaging
+    for (i = 0; i < messaging_events.length; i++) {
+        event = req.body.entry[0].messaging[i]
+        sender = event.sender.id
+        if (event.message && event.message.text) {
+            text = event.message.text
+            sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+        }
+    }
+    res.sendStatus(200)
+})
+
+var token = "EAAYJxwknAucBACiPTOPlLzW0HgTWZBp1KaFyFfFcRz26Yf5IZBUHNKilulxjG5YZC9CFdfheLF9gITozBTLsonkUInufqTKmkPdk3JdCDpz4U7eZBb7oNfu8lsUCpzs6ewhZAoozEmq687bUidXplZA0BVl8hJuWAm6KgI7jbBSwZDZD"
+
