@@ -65,8 +65,8 @@ app.post('/webhook/', function (req, res) {
             request.on('response', function(response) {
                 console.log("response came back!");
                 console.log(response);
-                if(response.hasOwnProperty("fulfillment") && response["fulfillment"].hasOwnProperty("speech")) {
-                    sendTextMessage(sender, response["fulfillment"]["speech"]);
+                if(response.hasOwnProperty("result")) {
+                    sendTextMessage(sender, response["result"]["fulfillment"]["speech"]);
                 }
                 
             });
