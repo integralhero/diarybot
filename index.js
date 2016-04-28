@@ -63,8 +63,12 @@ app.post('/webhook/', function (req, res) {
             text = event.message.text
             var request = ai.textRequest(text);
             request.on('response', function(response) {
+                console.log("response came back!");
                 console.log(response);
-                sendTextMessage(sender, response["fulfillment"]["speech"]);
+                if(response.hasOwnProperty("fulfillment") && response["fulfillment"].hasOwnProperty("speech")) {
+                    sendTextMessage(sender, response["fulfillment"]["speech"]);
+                }
+                
             });
             request.end();
             
