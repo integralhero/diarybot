@@ -64,7 +64,7 @@ app.post('/webhook/', function (req, res) {
             var request = ai.textRequest(text);
             request.on('response', function(response) {
                 console.log(response);
-                sendTextMessage(sender, response);
+                sendTextMessage(sender, response["fulfillment"]["speech"]);
             });
             request.end();
             
