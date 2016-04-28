@@ -5,7 +5,8 @@ var app = express()
 var pg = require('pg');
 
 app.set('port', (process.env.PORT || 5000))
-
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
 // Process application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended: false}))
 
