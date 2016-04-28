@@ -5,7 +5,7 @@ var app = express()
 var pg = require('pg');
 var apiai = require('apiai');
 
-var apiai = apiai("9b5dfea507654930b8826b60738c892e");
+var ai = apiai("9b5dfea507654930b8826b60738c892e");
 
 app.set('port', (process.env.PORT || 5000))
 app.set('views', __dirname + '/views');
@@ -61,7 +61,7 @@ app.post('/webhook/', function (req, res) {
         sender = event.sender.id
         if (event.message && event.message.text) {
             text = event.message.text
-            var request = app.textRequest(text);
+            var request = ai.textRequest(text);
             request.on('response', function(response) {
                 console.log(response);
                 sendTextMessage(sender, response);
