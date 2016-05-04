@@ -67,15 +67,22 @@ app.post('/webhook/', function (req, res) {
         sender = event.sender.id
         if (event.message && event.message.text) {
             text = event.message.text
-            var request = ai.textRequest(text);
-            request.on('response', function(response) {
-                console.log("response came back!");
-                console.log(response);
-                if(response.hasOwnProperty("result")) {
-                    sendTextMessage(sender, response["result"]["fulfillment"]["speech"]);
-                }
+            context = {};
+            client.message(text, context, (error, data) => {
+            if (error) {
+                console.log('Oops! Got an error: ' + error);
+            } else {
+                console.log('Yay, got Wit.ai response: ' + JSON.stringify(data));
+            }
+            // var request = ai.textRequest(text);
+            // request.on('response', function(response) {
+            //     console.log("response came back!");
+            //     console.log(response);
+            //     if(response.hasOwnProperty("result")) {
+            //         sendTextMessage(sender, response["result"]["fulfillment"]["speech"]);
+            //     }
                 
-            });
+            // });
             request.end();
             
         }
