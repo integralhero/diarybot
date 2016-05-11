@@ -68,12 +68,7 @@ app.post('/webhook/', function (req, res) {
         if (event.message && event.message.text) {
             text = event.message.text
             context = {};
-            client.message(text, context, (error, data) => {
-            if (error) {
-                console.log('Oops! Got an error: ' + error);
-            } else {
-                console.log('Yay, got Wit.ai response: ' + JSON.stringify(data));
-            }
+            
             // var request = ai.textRequest(text);
             // request.on('response', function(response) {
             //     console.log("response came back!");
@@ -87,7 +82,7 @@ app.post('/webhook/', function (req, res) {
             
         }
     }
-    res.sendStatus(200)
+    res.sendStatus(200);
 })
 
 
