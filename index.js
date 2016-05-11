@@ -85,6 +85,7 @@ app.post('/webhook/', function (req, res) {
         if (event.message && event.message.text) {
             text = event.message.text
             const context = {};
+            console.log("hello received message");
             client.message(text, context, (error, data) => {
               if (error) {
                 console.log('Oops! Got an error: ' + error);
