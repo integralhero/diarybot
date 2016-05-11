@@ -1,9 +1,3 @@
-module.exports = {
-  Logger: require('./lib/logger.js').Logger,
-  logLevels: require('./lib/logger.js').logLevels,
-  Wit: require('./lib/wit.js').Wit,
-}
-
 var express = require('express')
 var bodyParser = require('body-parser')
 var request = require('request')
@@ -12,6 +6,23 @@ var pg = require('pg');
 var apiai = require('apiai');
 
 var ai = apiai("9b5dfea507654930b8826b60738c892e");
+
+var WIT_TOKEN = "XNRX5EEFS7ROYRCPWVRBYFHDQCAF43ZH";
+
+const Wit = require('node-wit').Wit;
+const actions = {
+  say(sessionId, context, message, cb) {
+    console.log(message);
+    cb();
+  },
+  merge(sessionId, context, entities, message, cb) {
+    cb(context);
+  },
+  error(sessionId, context, error) {
+    console.log(error.message);
+  },
+};
+const client = new Wit(WIT_TOKEN, actions);
 
 app.set('port', (process.env.PORT || 5000))
 app.set('views', __dirname + '/views');
@@ -67,8 +78,14 @@ app.post('/webhook/', function (req, res) {
         sender = event.sender.id
         if (event.message && event.message.text) {
             text = event.message.text
-            context = {};
-            
+            const context = {};
+            client.message(text, context, (error, data) => {
+              if (error) {
+                console.log('Oops! Got an error: ' + error);
+              } else {
+                console.log('Yay, got Wit.ai response: ' + JSON.stringify(data));
+              }
+            });
             // var request = ai.textRequest(text);
             // request.on('response', function(response) {
             //     console.log("response came back!");
