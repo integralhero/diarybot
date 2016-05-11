@@ -1,3 +1,9 @@
+module.exports = {
+  Logger: require('./lib/logger.js').Logger,
+  logLevels: require('./lib/logger.js').logLevels,
+  Wit: require('./lib/wit.js').Wit,
+}
+
 var express = require('express')
 var bodyParser = require('body-parser')
 var request = require('request')
@@ -78,6 +84,7 @@ app.post('/webhook/', function (req, res) {
         sender = event.sender.id
         if (event.message && event.message.text) {
             text = event.message.text
+<<<<<<< HEAD
             const context = {};
             client.message(text, context, (error, data) => {
               if (error) {
@@ -86,6 +93,15 @@ app.post('/webhook/', function (req, res) {
                 console.log('Yay, got Wit.ai response: ' + JSON.stringify(data));
               }
             });
+=======
+            context = {};
+            client.message(text, context, (error, data) => {
+            if (error) {
+                console.log('Oops! Got an error: ' + error);
+            } else {
+                console.log('Yay, got Wit.ai response: ' + JSON.stringify(data));
+            }
+>>>>>>> b8470408b0d1ecc4cb74f647faa9b60654296c5b
             // var request = ai.textRequest(text);
             // request.on('response', function(response) {
             //     console.log("response came back!");
