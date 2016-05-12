@@ -14,11 +14,12 @@ var apiai = require('apiai');
 var ai = apiai("9b5dfea507654930b8826b60738c892e");
 
 var WIT_TOKEN = "XNRX5EEFS7ROYRCPWVRBYFHDQCAF43ZH";
-
+var singlesession = "";
 const Wit = require('node-wit').Wit;
 const actions = {
   say(sessionId, context, message, cb) {
     console.log(message);
+    sendTextMessage(singlesession, message);
     cb();
   },
   merge(sessionId, context, entities, message, cb) {
@@ -85,6 +86,7 @@ app.post('/webhook/', function (req, res) {
         if (event.message && event.message.text) {
             text = event.message.text
             const context = {};
+            singlesession = sender;
             console.log("hello received message");
             const session = 'my-user-session-42';
             client.runActions(session,text, context, (error, context) => {
