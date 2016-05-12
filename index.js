@@ -86,11 +86,12 @@ app.post('/webhook/', function (req, res) {
             text = event.message.text
             const context = {};
             console.log("hello received message");
-            client.message(text, context, (error, data) => {
+            const session = 'my-user-session-42';
+            client.runActions(session,text, context, (error, context) => {
               if (error) {
                 console.log('Oops! Got an error: ' + error);
               } else {
-                console.log('Yay, got Wit.ai response: ' + JSON.stringify(data));
+                console.log('Yay, got Wit.ai response: ' + JSON.stringify(context));
               }
             });
             // var request = ai.textRequest(text);
