@@ -16,8 +16,8 @@ const Wit = require('node-wit').Wit;
 const actions = {
   say(sessionId, context, message, cb) {
     var curfbid = sessions[sessionId].fbid;
-    console.log(message);
-    console.log(sessions[sessionId].fbid);
+    //console.log(message);
+    //console.log(sessions[sessionId].fbid);
     var name = getNameOfUserWithFBID(curfbid);
     sendTextMessage(sessions[sessionId].fbid, "hello " + name);
     sendTextMessage(sessions[sessionId].fbid, message);
@@ -103,8 +103,9 @@ function getNameOfUserWithFBID(fbid) {
             console.log('Error: ', response.body.error)
         }
         console.log("GOT RESPONSE ",response);
-        name = response["first_name"];
+        name = response.body["first_name"];
     })
+
   return name;
 }
 // Spin up the server
