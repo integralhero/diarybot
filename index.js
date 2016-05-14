@@ -115,7 +115,7 @@ app.post('/webhook/', function (req, res) {
         if (event.message && event.message.text) {
             text = event.message.text
             const context = {};
-            const session = 'my-user-session-42';
+            var sessionId = findOrCreateSession(sender);
             client.runActions(sessionId,text, sessions[sessionId].context, (error, context) => {
               if (error) {
                 console.log('Oops! Got an error: ' + error);
