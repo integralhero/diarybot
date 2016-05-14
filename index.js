@@ -17,8 +17,8 @@ const actions = {
   say(sessionId, context, message, cb) {
     console.log(message);
     console.log(sessions[sessionId].fbid);
-    sendTextMessage(sessionId, "hello " + sessions[sessionId].fbid);
-    sendTextMessage(sessionId, message);
+    sendTextMessage(sessions[sessionId].fbid, "hello " + sessions[sessionId].fbid);
+    sendTextMessage(sessions[sessionId].fbid, message);
     cb();
   },
   merge(sessionId, context, entities, message, cb) {
