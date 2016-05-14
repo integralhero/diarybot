@@ -91,6 +91,7 @@ function sendTextMessage(sender, text) {
     })
 }
 function getNameOfUserWithFBID(fbid) {
+  var name = "";
   request({
         url: 'https://graph.facebook.com/' + fbid,
         qs: {access_token:token},
@@ -101,9 +102,10 @@ function getNameOfUserWithFBID(fbid) {
         } else if (response.body.error) {
             console.log('Error: ', response.body.error)
         }
-        console.log(response);
-        return response["first_name"];
+        console.log("GOT RESPONSE ",response);
+        name = response["first_name"];
     })
+  return name;
 }
 // Spin up the server
 app.listen(app.get('port'), function() {
