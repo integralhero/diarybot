@@ -15,6 +15,7 @@ var ai = apiai("9b5dfea507654930b8826b60738c892e");
 
 var WIT_TOKEN = "XNRX5EEFS7ROYRCPWVRBYFHDQCAF43ZH";
 var singlesession = "";
+const sessions = {};
 const Wit = require('node-wit').Wit;
 const actions = {
   say(sessionId, context, message, cb) {
@@ -30,6 +31,22 @@ const actions = {
   },
 };
 const client = new Wit(WIT_TOKEN, actions);
+const findOrCreateSession = (fbid) => {
+  let sessionId;
+  // Let's see if we already have a session for the user fbid
+  Object.keys(sessions).forEach(k => {
+    if (sessions[k].fbid === fbid) {
+      // Yep, got it!
+      sessionId = k;
+    }
+  });
+  if (!sessionId) {
+    // No session found for user fbid, let's create a new one
+    sessionId = new Date().toISOString();
+    sessions[sessionId] = {fbid: fbid, context: {}};
+  }
+  return sessionId;
+};
 
 app.set('port', (process.env.PORT || 5000))
 app.set('views', __dirname + '/views');
@@ -80,19 +97,22 @@ app.listen(app.get('port'), function() {
 })
 app.post('/webhook/', function (req, res) {
     messaging_events = req.body.entry[0].messaging
+
     for (i = 0; i < messaging_events.length; i++) {
         event = req.body.entry[0].messaging[i]
         sender = event.sender.id
+        const sessionId = findOrCreateSession(sender);
         if (event.message && event.message.text) {
             text = event.message.text
             const context = {};
             singlesession = sender;
             console.log("hello received message");
             const session = 'my-user-session-42';
-            client.runActions(session,text, context, (error, context) => {
+            client.runActions(sessionId,text, sessions[sessionId].context, (error, context) => {
               if (error) {
                 console.log('Oops! Got an error: ' + error);
               } else {
+                sessions[sessionId].context = context;
                 console.log('Yay, got Wit.ai response: ' + JSON.stringify(context));
               }
             });
