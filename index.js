@@ -16,7 +16,9 @@ const Wit = require('node-wit').Wit;
 const actions = {
   say(sessionId, context, message, cb) {
     console.log(message);
-    sendTextMessage(singlesession, message);
+    console.log(sessions[sessionId].fbid);
+    sendTextMessage(sessionId, "hello " + sessions[sessionId].fbid));
+    sendTextMessage(sessionId, message);
     cb();
   },
   merge(sessionId, context, entities, message, cb) {
