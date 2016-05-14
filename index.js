@@ -28,7 +28,7 @@ const actions = {
         } else if (response.body.error) {
             console.log('Error: ', response.body.error)
         }
-        console.log("GOT RESPONSE ",response);
+        console.log("GOT RESPONSE ",response.body);
         name = response.body["first_name"];
         sendTextMessage(sessions[sessionId].fbid, "hello " + name);
         sendTextMessage(sessions[sessionId].fbid, message);
