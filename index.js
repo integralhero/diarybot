@@ -16,6 +16,42 @@ const Wit = require('node-wit').Wit;
 const actions = {
   say(sessionId, context, message, cb) {
     var curfbid = sessions[sessionId].fbid;
+    pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+      client.query("SELECT * FROM users WHERE id='"+curfbid+"'", function(err, result) {
+        done();
+        if (err)
+         { console.error(err); response.send("Error " + err); }
+        else {
+          if(result.rows.length === 0) { //no record found, create record
+            request({
+                url: 'https://graph.facebook.com/' + curfbid,
+                qs: {access_token:token},
+                method: 'GET'
+            }, function(error, response, body) {
+                if (error) {
+                    console.log('Error sending messages: ', error)
+                } else if (response.body.error) {
+                    console.log('Error: ', response.body.error)
+                }
+                var responseObj = JSON.parse(response.body);
+                var first_name = responseObj["first_name"];
+                console.log("we got the first_name: ", first_name);
+                client.query("INSERT INTO users (id, name) VALUES ('"+ curfbid + "','" + first_name +"')", function(err, result) {
+                  done();
+                  if (err)
+                   { console.error(err); response.send("Error " + err); }
+                  else {
+                  }
+                });
+            })
+            
+          }
+          else { //record was found
+
+          }
+        }
+      });
+    });
     //console.log(message);
     //console.log(sessions[sessionId].fbid);
     request({
@@ -146,7 +182,7 @@ app.post('/webhook/', function (req, res) {
 
 app.get('/db', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-    client.query('SELECT * FROM test_table', function(err, result) {
+    client.query('SELECT * FROM users', function(err, result) {
       done();
       if (err)
        { console.error(err); response.send("Error " + err); }
