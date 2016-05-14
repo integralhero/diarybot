@@ -30,6 +30,7 @@ const actions = {
         }
         console.log("GOT RESPONSE ",response.body);
         var name = response.body["first_name"];
+        console.log("NAME: ", name);
         sendTextMessage(sessions[sessionId].fbid, "hello " + name);
         sendTextMessage(sessions[sessionId].fbid, message);
         cb();
