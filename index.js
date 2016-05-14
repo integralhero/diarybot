@@ -18,10 +18,23 @@ const actions = {
     var curfbid = sessions[sessionId].fbid;
     //console.log(message);
     //console.log(sessions[sessionId].fbid);
-    var name = getNameOfUserWithFBID(curfbid);
-    sendTextMessage(sessions[sessionId].fbid, "hello " + name);
-    sendTextMessage(sessions[sessionId].fbid, message);
-    cb();
+    request({
+        url: 'https://graph.facebook.com/' + fbid,
+        qs: {access_token:token},
+        method: 'GET'
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error sending messages: ', error)
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error)
+        }
+        console.log("GOT RESPONSE ",response);
+        name = response.body["first_name"];
+        sendTextMessage(sessions[sessionId].fbid, "hello " + name);
+        sendTextMessage(sessions[sessionId].fbid, message);
+        cb();
+    })
+    
   },
   merge(sessionId, context, entities, message, cb) {
     cb(context);
@@ -90,24 +103,6 @@ function sendTextMessage(sender, text) {
         }
     })
 }
-function getNameOfUserWithFBID(fbid) {
-  var name = "";
-  request({
-        url: 'https://graph.facebook.com/' + fbid,
-        qs: {access_token:token},
-        method: 'GET'
-    }, function(error, response, body) {
-        if (error) {
-            console.log('Error sending messages: ', error)
-        } else if (response.body.error) {
-            console.log('Error: ', response.body.error)
-        }
-        console.log("GOT RESPONSE ",response);
-        name = response.body["first_name"];
-    })
-
-  return name;
-}
 // Spin up the server
 app.listen(app.get('port'), function() {
     console.log('running on port', app.get('port'))
@@ -120,9 +115,6 @@ app.post('/webhook/', function (req, res) {
         if (event.message && event.message.text) {
             text = event.message.text
             const context = {};
-            var sessionId = findOrCreateSession(sender);
-            singlesession = sender;
-            console.log("hello received message");
             const session = 'my-user-session-42';
             client.runActions(sessionId,text, sessions[sessionId].context, (error, context) => {
               if (error) {
