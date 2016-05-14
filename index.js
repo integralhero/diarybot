@@ -11,7 +11,7 @@ var ai = apiai("9b5dfea507654930b8826b60738c892e");
 
 var WIT_TOKEN = "XNRX5EEFS7ROYRCPWVRBYFHDQCAF43ZH";
 var singlesession = "";
-const sessions = {};
+var sessions = {};
 const Wit = require('node-wit').Wit;
 const actions = {
   say(sessionId, context, message, cb) {
@@ -26,7 +26,6 @@ const actions = {
     console.log(error.message);
   },
 };
-var sessions = {};
 const client = new Wit(WIT_TOKEN, actions);
 const findOrCreateSession = (fbid) => {
   var sessionId = "";
