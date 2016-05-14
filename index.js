@@ -102,7 +102,7 @@ function getNameOfUserWithFBID(fbid) {
             console.log('Error: ', response.body.error)
         }
         console.log(response);
-        return response["name"];
+        return response["first_name"];
     })
 }
 // Spin up the server
