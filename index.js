@@ -29,8 +29,8 @@ const actions = {
             console.log('Error: ', response.body.error)
         }
         console.log("GOT RESPONSE ",response.body);
-        var name = response.body["first_name"];
-        console.log("NAME: ", name);
+        var responseObj = response.body;
+        console.log("NAME: ", responseObj.first_name);
         sendTextMessage(sessions[sessionId].fbid, "hello " + name);
         sendTextMessage(sessions[sessionId].fbid, message);
         cb();
