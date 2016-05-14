@@ -19,7 +19,7 @@ const actions = {
     //console.log(message);
     //console.log(sessions[sessionId].fbid);
     request({
-        url: 'https://graph.facebook.com/' + fbid,
+        url: 'https://graph.facebook.com/' + curfbid,
         qs: {access_token:token},
         method: 'GET'
     }, function(error, response, body) {
