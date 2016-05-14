@@ -94,7 +94,7 @@ function getNameOfUserWithFBID(fbid) {
   request({
         url: 'https://graph.facebook.com/' + fbid,
         qs: {access_token:token},
-        method: 'POST'
+        method: 'GET'
     }, function(error, response, body) {
         if (error) {
             console.log('Error sending messages: ', error)
@@ -102,6 +102,7 @@ function getNameOfUserWithFBID(fbid) {
             console.log('Error: ', response.body.error)
         }
         console.log(response);
+        return response["name"];
     })
 }
 // Spin up the server
