@@ -17,7 +17,7 @@ const actions = {
   say(sessionId, context, message, cb) {
     console.log(message);
     console.log(sessions[sessionId].fbid);
-    sendTextMessage(sessionId, "hello " + sessions[sessionId].fbid));
+    sendTextMessage(sessionId, "hello " + sessions[sessionId].fbid);
     sendTextMessage(sessionId, message);
     cb();
   },
