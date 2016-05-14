@@ -15,9 +15,11 @@ var sessions = {};
 const Wit = require('node-wit').Wit;
 const actions = {
   say(sessionId, context, message, cb) {
+    var curfbid = sessions[sessionId].fbid;
     console.log(message);
     console.log(sessions[sessionId].fbid);
-    sendTextMessage(sessions[sessionId].fbid, "hello " + sessions[sessionId].fbid);
+    var name = getNameOfUserWithFBID(curfbid);
+    sendTextMessage(sessions[sessionId].fbid, "hello " + name);
     sendTextMessage(sessions[sessionId].fbid, message);
     cb();
   },
@@ -88,7 +90,20 @@ function sendTextMessage(sender, text) {
         }
     })
 }
-
+function getNameOfUserWithFBID(fbid) {
+  request({
+        url: 'https://graph.facebook.com/' + fbid,
+        qs: {access_token:token},
+        method: 'POST'
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error sending messages: ', error)
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error)
+        }
+        console.log(response);
+    })
+}
 // Spin up the server
 app.listen(app.get('port'), function() {
     console.log('running on port', app.get('port'))
