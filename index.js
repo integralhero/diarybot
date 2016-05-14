@@ -68,7 +68,7 @@ const actions = {
         var responseObj = JSON.parse(response.body);
         console.log("NAME: ", responseObj);
         console.log(responseObj["first_name"]);
-        var name = responseObj["first_name"]
+        var name = responseObj["first_name"];
         sendTextMessage(sessions[sessionId].fbid, "hello " + name);
         sendTextMessage(sessions[sessionId].fbid, message);
         cb();
@@ -149,8 +149,9 @@ app.listen(app.get('port'), function() {
 app.post('/webhook/', function (req, res) {
     messaging_events = req.body.entry[0].messaging
     for (i = 0; i < messaging_events.length; i++) {
-        event = req.body.entry[0].messaging[i]
-        sender = event.sender.id
+        event = req.body.entry[0].messaging[i];
+        sender = event.sender.id;
+        console.log("Sender ID: ", sender);
         if (event.message && event.message.text) {
             text = event.message.text
             const context = {};
