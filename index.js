@@ -98,12 +98,12 @@ app.listen(app.get('port'), function() {
 })
 app.post('/webhook/', function (req, res) {
     messaging_events = req.body.entry[0].messaging;
-    console.log(messaging_events);
+    console.log(req.body);
     for (i = 0; i < messaging_events.length; i++) {
         event = req.body.entry[0].messaging[i]
         sender = event.sender.id
-        const sessionId = findOrCreateSession(sender);
         if (event.message && event.message.text) {
+            const sessionId = findOrCreateSession(sender);
             text = event.message.text
             const context = {};
             console.log("hello received message");
