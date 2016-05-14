@@ -26,6 +26,7 @@ const actions = {
     console.log(error.message);
   },
 };
+var sessions = {};
 const client = new Wit(WIT_TOKEN, actions);
 const findOrCreateSession = (fbid) => {
   var sessionId = "";
@@ -99,10 +100,11 @@ app.post('/webhook/', function (req, res) {
         if (event.message && event.message.text) {
             text = event.message.text
             const context = {};
+            var sessionId = findOrCreateSession(sender);
             singlesession = sender;
             console.log("hello received message");
             const session = 'my-user-session-42';
-            client.runActions(session,text, context, (error, context) => {
+            client.runActions(sessionId,text, sessions[sessionId].context, (error, context) => {
               if (error) {
                 console.log('Oops! Got an error: ' + error);
               } else {
