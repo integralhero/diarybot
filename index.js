@@ -1,9 +1,4 @@
-'use strict';
-module.exports = {
-  Logger: require('./lib/logger.js').Logger,
-  logLevels: require('./lib/logger.js').logLevels,
-  Wit: require('./lib/wit.js').Wit,
-}
+
 
 var express = require('express')
 var bodyParser = require('body-parser')
@@ -97,21 +92,20 @@ app.listen(app.get('port'), function() {
     console.log('running on port', app.get('port'))
 })
 app.post('/webhook/', function (req, res) {
-    messaging_events = req.body.entry[0].messaging;
-    console.log(req.body);
+    messaging_events = req.body.entry[0].messaging
     for (i = 0; i < messaging_events.length; i++) {
         event = req.body.entry[0].messaging[i]
         sender = event.sender.id
         if (event.message && event.message.text) {
-            const sessionId = findOrCreateSession(sender);
             text = event.message.text
             const context = {};
+            singlesession = sender;
             console.log("hello received message");
-            client.runActions(sessionId,text, sessions[sessionId].context, (error, context) => {
+            const session = 'my-user-session-42';
+            client.runActions(session,text, context, (error, context) => {
               if (error) {
                 console.log('Oops! Got an error: ' + error);
               } else {
-                sessions[sessionId].context = context;
                 console.log('Yay, got Wit.ai response: ' + JSON.stringify(context));
               }
             });
