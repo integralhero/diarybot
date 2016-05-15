@@ -68,8 +68,9 @@ const findOrCreateSession = (fbid) => {
                 } else if (response.body.error) {
                     console.log('Error: ', response.body.error)
                 }
-                var first_name = response.body["first_name"];
-                console.log("RESPON BODY: ", response.body);
+                var responseBody = JSON.parse(response.body);
+                var first_name = responseBody["first_name"];
+                console.log("RESPON BODY: ", responseBody);
                 console.log("we got the first_name: ", first_name);
                 client.query("INSERT INTO users (id, name) VALUES ('"+ curfbid + "','" + first_name +"')", function(err, result) {
                   done();
