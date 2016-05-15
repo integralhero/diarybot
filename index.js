@@ -49,7 +49,6 @@ const findOrCreateSession = (fbid) => {
     sessionId = new Date().toISOString();
     sessions[sessionId] = {fbid: fbid, context: {}};
   }
-  var userObj = {};
   var curfbid = sessions[sessionId].fbid;
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
       client.query("SELECT * FROM users WHERE id='"+curfbid+"'", function(err, result) {
@@ -77,8 +76,7 @@ const findOrCreateSession = (fbid) => {
                   if (err)
                    { console.error(err); response.send("Error " + err); }
                   else {
-                    userObj["first_name"] = first_name;
-                    sessions[sessionId].context.user = userObj;
+                    sessions[sessionId].context.first_name = first_name;
                   }
                 });
             })
@@ -87,8 +85,7 @@ const findOrCreateSession = (fbid) => {
           else { //record was found
             var responseObj = result.rows[0];
             var first_name = responseObj["name"];
-            userObj["first_name"] = first_name;
-            sessions[sessionId].context.user = JSON.stringify(userObj);
+            sessions[sessionId].context.first_name = first_name;
             console.log(sessions);
           }
           
