@@ -89,6 +89,7 @@ const findOrCreateSession = (fbid) => {
             var first_name = responseObj["name"];
             userObj["first_name"] = first_name;
             sessions[sessionId].context.user = userObj;
+            console.log(sessions);
           }
           
         }
