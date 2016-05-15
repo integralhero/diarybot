@@ -18,8 +18,7 @@ const actions = {
     var curfbid = sessions[sessionId].fbid;
     var name = sessions[sessionId].context.first_name;
     console.log(context);
-    if(sessions[sessionId].firstMsg) {
-      sessions[sessionId].firstMsg = false
+    if(sessions[sessionId].noEntry) {
       sendTextMessage(curfbid, "Hello " + name + ", would you like to start an entry?");
     }
     //sendTextMessage(curfbid, "Hello " + name);
@@ -50,7 +49,7 @@ const findOrCreateSession = (fbid) => {
   if (!sessionId) {
     // No session found for user fbid, let's create a new one
     sessionId = new Date().toISOString();
-    sessions[sessionId] = {fbid: fbid, context: {}, firstMsg: true};
+    sessions[sessionId] = {fbid: fbid, context: {}, noEntry: true};
   }
   var curfbid = sessions[sessionId].fbid;
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
