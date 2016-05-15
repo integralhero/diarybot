@@ -16,7 +16,10 @@ const Wit = require('node-wit').Wit;
 const actions = {
   say(sessionId, context, message, cb) {
     var curfbid = sessions[sessionId].fbid;
-    sendTextMessage(curfbid, "Hello " + context.user.first_name);
+    var userObj = sessions[sessionId].context.user;
+    console.log("userobj: ", userObj);
+    console.log(context);
+    sendTextMessage(curfbid, "Hello " + userObj.first_name);
     sendTextMessage(curfbid, message);
     //console.log(message);
     //console.log(sessions[sessionId].fbid);
