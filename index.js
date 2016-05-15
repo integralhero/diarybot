@@ -54,7 +54,6 @@ const findOrCreateSession = (fbid) => {
         if (err)
          { console.error(err); response.send("Error " + err); }
         else {
-          console.log(result);
           
           if(result.rows.length === 0) { //no record found, create record
             request({
@@ -76,13 +75,16 @@ const findOrCreateSession = (fbid) => {
                    { console.error(err); response.send("Error " + err); }
                   else {
                     userObj.first_name = first_name;
+                    sessions[sessionId].context.user = userObj;
                   }
                 });
             })
             
           }
           else { //record was found
-            var responseObj = JSON.parse(response.body);
+            console.log(result);
+            console.log(result[0]);
+            var responseObj = JSON.parse(result.body);
             var first_name = responseObj["first_name"];
             userObj.first_name = first_name;
           }
