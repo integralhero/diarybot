@@ -18,7 +18,11 @@ const actions = {
     var curfbid = sessions[sessionId].fbid;
     var name = sessions[sessionId].context.first_name;
     console.log(context);
-    sendTextMessage(curfbid, "Hello " + name);
+    if(sessions[sessionId].firstMsg) {
+      sessions[sessionId].firstMsg = false
+      sendTextMessage(curfbid, "Hello " + name + ", would you like to start an entry?");
+    }
+    //sendTextMessage(curfbid, "Hello " + name);
     sendTextMessage(curfbid, message);
     //console.log(message);
     //console.log(sessions[sessionId].fbid);
@@ -46,7 +50,7 @@ const findOrCreateSession = (fbid) => {
   if (!sessionId) {
     // No session found for user fbid, let's create a new one
     sessionId = new Date().toISOString();
-    sessions[sessionId] = {fbid: fbid, context: {}};
+    sessions[sessionId] = {fbid: fbid, context: {}, firstMsg: true};
   }
   var curfbid = sessions[sessionId].fbid;
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
@@ -72,6 +76,7 @@ const findOrCreateSession = (fbid) => {
                 var first_name = responseBody["first_name"];
                 console.log("RESPON BODY: ", responseBody);
                 console.log("we got the first_name: ", first_name);
+                sendTextMessage(fbid, "Welcome to Scribe. Scribe is a place where you can store your thoughts and be more mindful on a daily basis");
                 client.query("INSERT INTO users (id, name) VALUES ('"+ curfbid + "','" + first_name +"')", function(err, result) {
                   done();
                   if (err)
@@ -117,7 +122,17 @@ app.get('/webhook/', function (req, res) {
     }
     res.send('Error, wrong token')
 })
-
+function storeEntry(message, user_id) {
+  var newdate = new Date.toISOString();
+  client.query('INSERT INTO entries (text, user_id, datetime) VALUES($1,$2,$3)', message, user_id, newdate, function(err, result) {
+    done();
+    if (err)
+     { console.error(err); response.send("Error " + err); }
+    else {
+      sendTextMessage(user_id, "Message received!");
+    }
+  });
+}
 function sendTextMessage(sender, text) {
     messageData = {
         text:text
