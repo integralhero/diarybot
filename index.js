@@ -47,6 +47,7 @@ const findOrCreateSession = (fbid) => {
     sessions[sessionId] = {fbid: fbid, context: {}};
   }
   var userObj = {};
+  var curfbid = sessions[sessionId].fbid;
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
       client.query("SELECT * FROM users WHERE id='"+curfbid+"'", function(err, result) {
         done();
