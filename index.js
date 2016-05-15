@@ -62,8 +62,7 @@ const findOrCreateSession = (fbid) => {
           if(result.rows.length === 0) { //no record found, create record
             console.log("no records found ", result.rows.length);
             request({
-                url: 'https://graph.facebook.com/v2.6/' + curfbid,
-                qs: {access_token:token},
+                url: 'https://graph.facebook.com/v2.6/' + curfbid + '?access_token='+token,
                 method: 'GET'
             }, function(error, response, body) {
                 if (error) {
