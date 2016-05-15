@@ -86,7 +86,7 @@ const findOrCreateSession = (fbid) => {
           }
           else { //record was found
             var responseObj = result.rows[0];
-            var first_name = responseObj["first_name"];
+            var first_name = responseObj["name"];
             userObj.first_name = first_name;
             sessions[sessionId].context.user = userObj;
             console.log("inside user ", userObj);
