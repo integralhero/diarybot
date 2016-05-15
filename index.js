@@ -82,13 +82,12 @@ const findOrCreateSession = (fbid) => {
             
           }
           else { //record was found
-            console.log(result);
-            console.log(result[0]);
-            var responseObj = JSON.parse(result.body);
+            var responseObj = JSON.parse(result.rows[0]);
             var first_name = responseObj["first_name"];
             userObj.first_name = first_name;
+            sessions[sessionId].context.user = userObj;
           }
-          sessions[sessionId].context.user = userObj;
+          
         }
       });
     });
