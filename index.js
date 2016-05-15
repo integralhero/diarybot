@@ -52,6 +52,8 @@ const findOrCreateSession = (fbid) => {
     sessions[sessionId] = {fbid: fbid, context: {}, noEntry: true};
   }
   var curfbid = sessions[sessionId].fbid;
+  console.log("Facebook ID: ",fbid);
+  console.log("Facebook ID2: ",curfbid);
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
       client.query("SELECT * FROM users WHERE id='"+curfbid+"'", function(err, result) {
         done();
@@ -62,7 +64,7 @@ const findOrCreateSession = (fbid) => {
           if(result.rows.length === 0) { //no record found, create record
             console.log("no records found ", result.rows.length);
             request({
-                url: 'https://graph.facebook.com/v2.6/' + curfbid + '?access_token='+token,
+                url: 'https://graph.facebook.com/v2.6/me/' + curfbid + '?access_token='+token,
                 method: 'GET'
             }, function(error, response, body) {
                 if (error) {
@@ -72,8 +74,8 @@ const findOrCreateSession = (fbid) => {
                 }
                 var responseBody = JSON.parse(response.body);
                 var first_name = responseBody["first_name"];
-                console.log("RESPON BODY: ", responseBody);
-                console.log("we got the first_name: ", first_name);
+                //console.log("RESPON BODY: ", responseBody);
+                //console.log("we got the first_name: ", first_name);
                 sendTextMessage(fbid, "Welcome to Scribe. Scribe is a place where you can store your thoughts and be more mindful on a daily basis");
                 client.query("INSERT INTO users (id, name) VALUES ('"+ curfbid + "','" + first_name +"')", function(err, result) {
                   done();
@@ -159,7 +161,7 @@ app.post('/webhook/', function (req, res) {
     messaging_events = req.body.entry[0].messaging
     for (i = 0; i < messaging_events.length; i++) {
         event = req.body.entry[0].messaging[i];
-        sender = event.sender.id;
+        var sender = event.sender.id;
         console.log("Sender ID: ", sender);
         if (event.message && event.message.text) {
             text = event.message.text
