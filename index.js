@@ -57,6 +57,7 @@ const findOrCreateSession = (fbid) => {
         else {
           
           if(result.rows.length === 0) { //no record found, create record
+            console.log("no records found ", result.rows.length);
             request({
                 url: 'https://graph.facebook.com/v2.6/' + curfbid,
                 qs: {access_token:token},
@@ -67,8 +68,7 @@ const findOrCreateSession = (fbid) => {
                 } else if (response.body.error) {
                     console.log('Error: ', response.body.error)
                 }
-                var responseObj = response.body;
-                var first_name = responseObj["first_name"];
+                var first_name = response.body.first_name;
                 console.log("we got the first_name: ", first_name);
                 client.query("INSERT INTO users (id, name) VALUES ('"+ curfbid + "','" + first_name +"')", function(err, result) {
                   done();
