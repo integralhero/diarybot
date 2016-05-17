@@ -16,10 +16,10 @@ const Wit = require('node-wit').Wit;
 const actions = {
   say(sessionId, context, message, cb) {
     var curfbid = sessions[sessionId].fbid;
-    var name = sessions[sessionId].context.first_name;
+    //var name = sessions[sessionId].context.first_name;
     console.log(context);
     if(sessions[sessionId].noEntry) {
-      sendTextMessage(curfbid, "Hello " + name + ", would you like to start an entry?");
+      sendTextMessage(curfbid, "Hello would you like to start an entry?");
     }
     //sendTextMessage(curfbid, "Hello " + name);
     sendTextMessage(curfbid, message);
@@ -63,35 +63,22 @@ const findOrCreateSession = (fbid) => {
           
           if(result.rows.length === 0) { //no record found, create record
             console.log("no records found ", result.rows.length);
-            request({
-                url: 'https://graph.facebook.com/v2.6/me/' + curfbid + '?access_token='+token,
-                method: 'GET'
-            }, function(error, response, body) {
-                if (error) {
-                    console.log('Error sending messages: ', error)
-                } else if (response.body.error) {
-                    console.log('Error: ', response.body.error)
-                }
-                var responseBody = JSON.parse(response.body);
-                var first_name = responseBody["first_name"];
-                //console.log("RESPON BODY: ", responseBody);
-                //console.log("we got the first_name: ", first_name);
-                sendTextMessage(fbid, "Welcome to Scribe. Scribe is a place where you can store your thoughts and be more mindful on a daily basis");
-                client.query("INSERT INTO users (id, name) VALUES ('"+ curfbid + "','" + first_name +"')", function(err, result) {
-                  done();
-                  if (err)
-                   { console.error(err); response.send("Error " + err); }
-                  else {
-                    sessions[sessionId].context.first_name = first_name;
-                  }
-                });
-            })
+
+            sendTextMessage(fbid, "Welcome to Scribe. Scribe is a place where you can store your thoughts and be more mindful on a daily basis");
+            client.query("INSERT INTO users (id, name) VALUES ('"+ curfbid + "', ')", function(err, result) {
+              done();
+              if (err)
+               { console.error(err); response.send("Error " + err); }
+              else {
+                sessions[sessionId].context.first_name = first_name;
+              }
+            });
             
           }
           else { //record was found
             var responseObj = result.rows[0];
-            var first_name = responseObj["name"];
-            sessions[sessionId].context.first_name = first_name;
+            //var first_name = responseObj["name"];
+            //sessions[sessionId].context.first_name = first_name;
             console.log(sessions);
           }
           
@@ -167,6 +154,7 @@ app.post('/webhook/', function (req, res) {
             text = event.message.text
             const context = {};
             var sessionId = findOrCreateSession(sender);
+            console.log("inside /webhook: ",sender);
             client.runActions(sessionId,text, sessions[sessionId].context, (error, context) => {
               if (error) {
                 console.log('Oops! Got an error: ' + error);
