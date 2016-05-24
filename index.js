@@ -162,7 +162,7 @@ app.post('/webhook/', function (req, res) {
             console.log("inside /webhook: ",sender);
             var fbid = sessions[sessionId].fbid;
             var user = sessions[sessionId];
-            if(showedMenu) {
+            if(user.showedMenu) {
               if(text == "1") {
                 sessions[sessionId].pickedOne = true;
               }
