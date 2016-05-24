@@ -90,7 +90,8 @@ const findOrCreateSession = (fbid) => {
 function retrieveEntries(user_id, date) {
   console.log("DATE INSIDE FUNCTION: ", date);
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-    client.query("SELECT * FROM entries WHERE user_id='" + user_id + "' AND datetime='" + date + "'", function(err, result) {
+    var str = "' AND year(" + date + ") = year(datetime) AND month(datetime) = month(" + date + ") AND day(datetime) = day(" + datetime + ")"; 
+    client.query("SELECT * FROM entries WHERE user_id='" + user_id + str, function(err, result) {
       if(result.rows.length == 0) {
         sendTextMessage(user_id, "Sorry! I didn't find any entries for that date.");
       }
