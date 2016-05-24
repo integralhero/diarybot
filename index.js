@@ -47,7 +47,7 @@ const findOrCreateSession = (fbid) => {
   if (!sessionId) {
     // No session found for user fbid, let's create a new one
     sessionId = new Date().toISOString();
-    sessions[sessionId] = {fbid: fbid, context: {}, noEntry: true, repliedEntry: false, pickedOne: false, pickedTwo: false, pickedThree: false};
+    sessions[sessionId] = {fbid: fbid, context: {}, noEntry: true, repliedEntry: false, pickedOne: false, pickedTwo: false, pickedThree: false, showedMenu: false};
   }
   var curfbid = sessions[sessionId].fbid;
   console.log("Facebook ID: ",fbid);
@@ -162,8 +162,18 @@ app.post('/webhook/', function (req, res) {
             console.log("inside /webhook: ",sender);
             var fbid = sessions[sessionId].fbid;
             var user = sessions[sessionId];
-            if(!user.pickedOne && !user.pickedTwo && !user.pickedThree) {
-              console.log("=================INSIDE MENU===============");
+            if(showedMenu) {
+              if(text == "1") {
+                sessions[sessionId].pickedOne = true;
+              }
+              else if(text == "2") {
+                sessions[sessionId].pickedTwo = true;
+              }
+              else {
+                sessions[sessionId].pickedThree = true;
+              }
+            }
+            if(!showedMenu || (!user.pickedOne && !user.pickedTwo && !user.pickedThree)) {
               async.series([
                 function (callback) {
                     // callback has to be called by `uploadImage` when it's done
@@ -187,7 +197,7 @@ app.post('/webhook/', function (req, res) {
                 }
                   
               ]);
-            
+              sessions[sessionId].showedMenu = true;
             }
             else {
               if(user.pickedOne) {
