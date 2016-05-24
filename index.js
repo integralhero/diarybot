@@ -63,9 +63,9 @@ const findOrCreateSession = (fbid) => {
             console.log("no records found ", result.rows.length);
 
             sendTextMessage(fbid, "Welcome to Scribe. Scribe is a place where you can store your thoughts and be more mindful on a daily basis");
-            client.query("INSERT INTO users (id, name) VALUES ($1,$2)", curfbid, "test", function(err, result) {
+            client.query("INSERT INTO users (id, name) VALUES ('"+ curfbid + "','test')", function(err, result) {
               done();
-              if (err) { 
+              if (err){ 
                 console.error(err); 
               }
               else {
