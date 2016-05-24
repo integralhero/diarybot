@@ -154,7 +154,6 @@ app.post('/webhook/', function (req, res) {
         var sender = event.sender.id;
         console.log("Sender ID: ", sender);
         console.log("Event: ", event.message);
-        console.log("Event msg: ", event.message.text);
         if (event.message && event.message.text) {
             text = event.message.text
             const context = {};
