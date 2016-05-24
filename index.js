@@ -109,7 +109,8 @@ app.get('/webhook/', function (req, res) {
     res.send('Error, wrong token')
 })
 function storeEntry(message, user_id) {
-  var newdate = new Date.toISOString();
+  var newdate = new Date();
+  newdate = newdate.toISOString();
   client.query('INSERT INTO entries (text, user_id, datetime) VALUES($1,$2,$3)', message, user_id, newdate, function(err, result) {
     done();
     if (err)
@@ -225,6 +226,7 @@ app.post('/webhook/', function (req, res) {
                     sessions[sessionId].noEntry = true;
                     sessions[sessionId].repliedEntry = false;
                     sessions[sessionId].pickedOne = false;
+                    sessions[sessionId].showedMenu = false;
                   }
               }
               else if(user.pickedTwo) {
