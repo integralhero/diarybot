@@ -158,9 +158,10 @@ app.post('/webhook/', function (req, res) {
               sendTextMessage(fbid, "Hello would you like to start an entry?");
               sessions[sessionId].noEntry = false
             }
-            if(!sessions[sessionId].noEntry && !sessions[sessionId].repliedEntry) {
+            else if(!sessions[sessionId].noEntry && !sessions[sessionId].repliedEntry) {
               if(text == "Yes") {
                 sendTextMessage(fbid, "What did you do today?");
+                console.log("Text said yes");
               }
               else {
                 sendTextMessage(fbid, "No problem, another day then.");
