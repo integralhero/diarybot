@@ -166,7 +166,7 @@ app.post('/webhook/', function (req, res) {
               }
               else {
                 sendTextMessage(fbid, "No problem, another day then.");
-                ssessions[sessionId].noEntry = true;
+                sessions[sessionId].noEntry = true;
               }
               
               
