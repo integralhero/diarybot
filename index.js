@@ -174,7 +174,7 @@ app.post('/webhook/', function (req, res) {
             else if(sessions[sessionId].repliedEntry) {
               sendTextMessage(fbid, "Great, I'll remember that for you!");
               sessions[sessionId].noEntry = true;
-              sessions[sessionId].repliedEntry = true;
+              sessions[sessionId].repliedEntry = false;
             }
             // client.runActions(sessionId,text, sessions[sessionId].context, (error, context) => {
             //   if (error) {
