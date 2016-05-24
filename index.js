@@ -119,7 +119,6 @@ function storeEntry(message, user_id) {
   });
 }
 function sendTextMessage(sender, text, callback) {
-  console.log("SENT TEXT: ", text);
     messageData = {
         text:text
     }
