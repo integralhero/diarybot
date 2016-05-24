@@ -161,11 +161,27 @@ app.post('/webhook/', function (req, res) {
             var user = sessions[sessionId];
             if(!user.pickedOne && !user.pickedTwo && !user.pickedThree) {
               async.series([
-                  sendTextMessage(fbid, "Welcome to Scribe!"),
-                  sendTextMessage(fbid, "What do you want to do today?"),
-                  sendTextMessage(fbid, "1. Create an entry"),
-                  sendTextMessage(fbid, "2. Search through entries"),
-                  sendTextMessage(fbid, "3. Get a summary")
+                function (callback) {
+                    // callback has to be called by `uploadImage` when it's done
+                    sendTextMessage(fbid, "Welcome to Scribe!", callback),
+                },
+                function (callback) {
+                    // callback has to be called by `uploadImage` when it's done
+                    sendTextMessage(fbid, "What do you want to do today?", callback),
+                },
+                function (callback) {
+                    // callback has to be called by `uploadImage` when it's done
+                    sendTextMessage(fbid, "1. Create an entry", callback),
+                },
+                function (callback) {
+                    // callback has to be called by `uploadImage` when it's done
+                    sendTextMessage(fbid, "2. Search Entries", callback),
+                },
+                function (callback) {
+                    // callback has to be called by `uploadImage` when it's done
+                    sendTextMessage(fbid, "3. Get a summary", callback),
+                },
+                  
               ]);
             
             }
