@@ -162,12 +162,18 @@ app.post('/webhook/', function (req, res) {
               if(text == "Yes") {
                 sendTextMessage(fbid, "What did you do today?");
                 console.log("Text said yes");
+                sessions[sessionId].repliedEntry = true;
               }
               else {
                 sendTextMessage(fbid, "No problem, another day then.");
+                ssessions[sessionId].noEntry = true;
               }
               
-              sessions[sessionId].repliedEntry = true
+              
+            }
+            else if(repliedEntry) {
+              sendTextMessage(fbid, "Great, I'll remember that for you!");
+              sessions[sessionId].repliedEntry = true;
             }
             // client.runActions(sessionId,text, sessions[sessionId].context, (error, context) => {
             //   if (error) {
