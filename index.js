@@ -152,6 +152,8 @@ app.post('/webhook/', function (req, res) {
         event = req.body.entry[0].messaging[i];
         var sender = event.sender.id;
         console.log("Sender ID: ", sender);
+        console.log("Event: ", event.message);
+        console.log("Event msg: ", event.message.text);
         if (event.message && event.message.text) {
             text = event.message.text
             const context = {};
@@ -160,6 +162,7 @@ app.post('/webhook/', function (req, res) {
             var fbid = sessions[sessionId].fbid;
             var user = sessions[sessionId];
             if(!user.pickedOne && !user.pickedTwo && !user.pickedThree) {
+              console.log("=================INSIDE MENU===============");
               async.series([
                 function (callback) {
                     // callback has to be called by `uploadImage` when it's done
