@@ -18,11 +18,9 @@ const actions = {
     var curfbid = sessions[sessionId].fbid;
     //var name = sessions[sessionId].context.first_name;
     console.log(context);
-    if(sessions[sessionId].noEntry) {
-      sendTextMessage(curfbid, "Hello would you like to start an entry?");
-    }
+    
     //sendTextMessage(curfbid, "Hello " + name);
-    sendTextMessage(curfbid, message);
+    //sendTextMessage(curfbid, message);
     //console.log(message);
     //console.log(sessions[sessionId].fbid);
     cb();
@@ -49,7 +47,7 @@ const findOrCreateSession = (fbid) => {
   if (!sessionId) {
     // No session found for user fbid, let's create a new one
     sessionId = new Date().toISOString();
-    sessions[sessionId] = {fbid: fbid, context: {}, noEntry: true};
+    sessions[sessionId] = {fbid: fbid, context: {}, noEntry: true, repliedEntry: false};
   }
   var curfbid = sessions[sessionId].fbid;
   console.log("Facebook ID: ",fbid);
@@ -155,13 +153,28 @@ app.post('/webhook/', function (req, res) {
             const context = {};
             var sessionId = findOrCreateSession(sender);
             console.log("inside /webhook: ",sender);
-            client.runActions(sessionId,text, sessions[sessionId].context, (error, context) => {
-              if (error) {
-                console.log('Oops! Got an error: ' + error);
-              } else {
-                console.log('Yay, got Wit.ai response: ' + JSON.stringify(context));
+            var fbid = sessions[sessionId].fbid;
+            if(sessions[sessionId].noEntry) {
+              sendTextMessage(fbid, "Hello would you like to start an entry?");
+              sessions[sessionId].noEntry = false
+            }
+            if(!sessions[sessionId].noEntry && !sessions[sessionId].repliedEntry) {
+              if(text == "Yes") {
+                sendTextMessage(fbid, "What did you do today?");
               }
-            });
+              else {
+                sendTextMessage(fbid, "No problem, another day then.");
+              }
+              
+              sessions[sessionId].repliedEntry = true
+            }
+            // client.runActions(sessionId,text, sessions[sessionId].context, (error, context) => {
+            //   if (error) {
+            //     console.log('Oops! Got an error: ' + error);
+            //   } else {
+            //     console.log('Yay, got Wit.ai response: ' + JSON.stringify(context));
+            //   }
+            // });
             // var request = ai.textRequest(text);
             // request.on('response', function(response) {
             //     console.log("response came back!");
