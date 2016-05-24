@@ -98,6 +98,8 @@ function retrieveEntries(user_id, date) {
       else {
         var str = "";
         for(var i = 0; i < result.rows.length; i++) {
+          console.log(result.rows[i]);
+          console.log(result.rows[i].text);
           str += result.rows[i];
         }
         sendTextMessage(user_id, str);
