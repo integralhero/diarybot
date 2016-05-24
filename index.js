@@ -47,7 +47,7 @@ const findOrCreateSession = (fbid) => {
   if (!sessionId) {
     // No session found for user fbid, let's create a new one
     sessionId = new Date().toISOString();
-    sessions[sessionId] = {fbid: fbid, context: {}, noEntry: true, repliedEntry: false};
+    sessions[sessionId] = {fbid: fbid, context: {}, noEntry: true, repliedEntry: false, pickedOne: false, pickedTwo: false, pickedThree: false};
   }
   var curfbid = sessions[sessionId].fbid;
   console.log("Facebook ID: ",fbid);
@@ -118,7 +118,7 @@ function storeEntry(message, user_id) {
     }
   });
 }
-function sendTextMessage(sender, text) {
+function sendTextMessage(sender, text, callback) {
     messageData = {
         text:text
     }
@@ -136,6 +136,10 @@ function sendTextMessage(sender, text) {
         } else if (response.body.error) {
             console.log('Error: ', response.body.error)
         }
+        if(callback) {
+          callback();
+        }
+        
     })
 }
 // Spin up the server
@@ -154,27 +158,45 @@ app.post('/webhook/', function (req, res) {
             var sessionId = findOrCreateSession(sender);
             console.log("inside /webhook: ",sender);
             var fbid = sessions[sessionId].fbid;
-            if(sessions[sessionId].noEntry) {
-              sendTextMessage(fbid, "Hello would you like to start an entry?");
-              sessions[sessionId].noEntry = false
+            var user = sessions[sessionId];
+            if(!user.pickedOne && !user.pickedTwo && !user.pickedThree) {
+              sendTextMessage(fbid, "Welcome to Scribe!", sendTextMessage(fbid, "1. Start an entry", ););
             }
-            else if(!sessions[sessionId].noEntry && !sessions[sessionId].repliedEntry) {
-              if(text == "Yes") {
-                sendTextMessage(fbid, "What did you do today?");
-                console.log("Text said yes");
-                sessions[sessionId].repliedEntry = true;
+            else {
+              if(user.pickedOne) {
+                if(user.noEntry) {
+                  sendTextMessage(fbid, "Hello would you like to start an entry?");
+                  sessions[sessionId].noEntry = false
+                  }
+                  else if(!user.noEntry && !user.repliedEntry) {
+                    if(text == "Yes") {
+                      sendTextMessage(fbid, "What did you do today?");
+                      console.log("Text said yes");
+
+                      sessions[sessionId].repliedEntry = true;
+                    }
+                    else {
+                      sendTextMessage(fbid, "No problem, another day then.");
+                      sessions[sessionId].noEntry = true;
+                    }
+                    
+                    
+                  }
+                  else if(user.repliedEntry) {
+                    storeEntry(text,fbid);
+                    sendTextMessage(fbid, "Great, I'll remember that for you!");
+                    sessions[sessionId].noEntry = true;
+                    sessions[sessionId].repliedEntry = false;
+                    sessions[sessionId].pickedOne = false;
+                  }
+              }
+              else if(user.pickedTwo) {
+
               }
               else {
-                sendTextMessage(fbid, "No problem, another day then.");
-                sessions[sessionId].noEntry = true;
+
               }
               
-              
-            }
-            else if(sessions[sessionId].repliedEntry) {
-              sendTextMessage(fbid, "Great, I'll remember that for you!");
-              sessions[sessionId].noEntry = true;
-              sessions[sessionId].repliedEntry = false;
             }
             // client.runActions(sessionId,text, sessions[sessionId].context, (error, context) => {
             //   if (error) {
