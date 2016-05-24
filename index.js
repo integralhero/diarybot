@@ -163,24 +163,24 @@ app.post('/webhook/', function (req, res) {
               async.series([
                 function (callback) {
                     // callback has to be called by `uploadImage` when it's done
-                    sendTextMessage(fbid, "Welcome to Scribe!", callback),
+                    sendTextMessage(fbid, "Welcome to Scribe!", callback);
                 },
                 function (callback) {
                     // callback has to be called by `uploadImage` when it's done
-                    sendTextMessage(fbid, "What do you want to do today?", callback),
+                    sendTextMessage(fbid, "What do you want to do today?", callback);
                 },
                 function (callback) {
                     // callback has to be called by `uploadImage` when it's done
-                    sendTextMessage(fbid, "1. Create an entry", callback),
+                    sendTextMessage(fbid, "1. Create an entry", callback);
                 },
                 function (callback) {
                     // callback has to be called by `uploadImage` when it's done
-                    sendTextMessage(fbid, "2. Search Entries", callback),
+                    sendTextMessage(fbid, "2. Search Entries", callback);
                 },
                 function (callback) {
                     // callback has to be called by `uploadImage` when it's done
-                    sendTextMessage(fbid, "3. Get a summary", callback),
-                },
+                    sendTextMessage(fbid, "3. Get a summary", callback);
+                }
                   
               ]);
             
