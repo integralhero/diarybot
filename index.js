@@ -173,7 +173,7 @@ app.post('/webhook/', function (req, res) {
                 sessions[sessionId].pickedThree = true;
               }
             }
-            if(!showedMenu || (!user.pickedOne && !user.pickedTwo && !user.pickedThree)) {
+            if(!user.showedMenu || (!user.pickedOne && !user.pickedTwo && !user.pickedThree)) {
               async.series([
                 function (callback) {
                     // callback has to be called by `uploadImage` when it's done
