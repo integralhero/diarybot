@@ -247,6 +247,7 @@ app.post('/webhook/', function (req, res) {
                     sessions[sessionId].repliedEntry = false;
                     sessions[sessionId].pickedOne = false;
                     sessions[sessionId].pickedTwo = false;
+                    sessions[sessionId].pickedThree = false;
                     sessions[sessionId].showedMenu = false;
                     sessions[sessionId].noQuery = true;
                   }
@@ -264,6 +265,7 @@ app.post('/webhook/', function (req, res) {
                   sessions[sessionId].repliedEntry = false;
                   sessions[sessionId].pickedOne = false;
                   sessions[sessionId].pickedTwo = false;
+                  sessions[sessionId].pickedThree = false;
                   sessions[sessionId].showedMenu = false;
                   sessions[sessionId].noQuery = true;
                 }
