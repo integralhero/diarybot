@@ -112,10 +112,12 @@ function storeEntry(message, user_id) {
   var newdate = new Date();
   newdate = newdate.toISOString();
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-    client.query('INSERT INTO entries (text, user_id, datetime) VALUES($1,$2,$3)', message, user_id, newdate, function(err, result) {
+    var valuestr = "VALUES('" + message + "','" + user_id + "','" + newdate + "')"; 
+    client.query("INSERT INTO entries (text, user_id, datetime) " + valuestr ,  function(err, result) {
       done();
-      if (err)
-       { console.error(err); response.send("Error " + err); }
+      if (err) { 
+        console.error(err); 
+      }
       else {
         sendTextMessage(user_id, "Message received!");
       }
