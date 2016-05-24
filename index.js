@@ -137,7 +137,7 @@ function sendTextMessage(sender, text, callback) {
             console.log('Error: ', response.body.error)
         }
         if(callback) {
-          callback();
+          setTimeout(callback(), 300);
         }
         
     })
