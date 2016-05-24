@@ -160,7 +160,7 @@ app.post('/webhook/', function (req, res) {
             var fbid = sessions[sessionId].fbid;
             var user = sessions[sessionId];
             if(!user.pickedOne && !user.pickedTwo && !user.pickedThree) {
-              sendTextMessage(fbid, "Welcome to Scribe!", sendTextMessage(fbid, "What do you want to do today?", sendTextMessage(fbid, "1. Write an entry",sendTextMessage(fbid, "2. Query Entries",sendTextMessage(fbid, "3. Get a summary"));
+              sendTextMessage(fbid, "Welcome to Scribe!", sendTextMessage(fbid, "What do you want to do today?", sendTextMessage(fbid, "1. Write an entry",sendTextMessage(fbid, "2. Query Entries",sendTextMessage(fbid, "3. Get a summary")))));
             }
             else {
               if(user.pickedOne) {
