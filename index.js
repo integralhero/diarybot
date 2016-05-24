@@ -258,6 +258,7 @@ app.post('/webhook/', function (req, res) {
                 }
                 else {
                   var date_query = chrono.parseDate(text).toISOString().slice(0, 19).replace('T', ' ');
+                  console.log("DATE: ", date_query);
                   retrieveEntries(fbid, date_query);
                   sessions[sessionId].noEntry = true;
                   sessions[sessionId].repliedEntry = false;
