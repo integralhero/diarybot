@@ -119,7 +119,7 @@ function storeEntry(message, user_id) {
         console.error(err); 
       }
       else {
-        sendTextMessage(user_id, "Message received!");
+       // sendTextMessage(user_id, "Message received!");
       }
     });
   });
