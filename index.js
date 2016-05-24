@@ -10,6 +10,7 @@ var async = require("async");
 var ai = apiai("9b5dfea507654930b8826b60738c892e");
 var token = "EAAYJxwknAucBAIQgU5VlZAZAfZAz0vovNKkfIxkt0OcpB93cNielJgPRktCZBXMTSKPzg4n8RLOZAZAYmAV6nSN4k0PMryDjAF4dZByBe4LtafeCrfZBHvQEZA1AAGVvaHz53L1jg1wEiapZAnhgNkJrbFmyYO5BryZBDI9tRbVCDDJFQZDZD";
 var WIT_TOKEN = "XNRX5EEFS7ROYRCPWVRBYFHDQCAF43ZH";
+var chrono = require('chrono-node');
 var singlesession = "";
 var sessions = {};
 const Wit = require('node-wit').Wit;
@@ -47,7 +48,7 @@ const findOrCreateSession = (fbid) => {
   if (!sessionId) {
     // No session found for user fbid, let's create a new one
     sessionId = new Date().toISOString();
-    sessions[sessionId] = {fbid: fbid, context: {}, noEntry: true, repliedEntry: false, pickedOne: false, pickedTwo: false, pickedThree: false, showedMenu: false};
+    sessions[sessionId] = {fbid: fbid, context: {}, noEntry: true, noQuery: true, repliedEntry: false, pickedOne: false, pickedTwo: false, pickedThree: false, showedMenu: false};
   }
   var curfbid = sessions[sessionId].fbid;
   console.log("Facebook ID: ",fbid);
@@ -86,7 +87,22 @@ const findOrCreateSession = (fbid) => {
     });
   return sessionId;
 };
-
+function retrieveEntries(user_id, date) {
+  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+    client.query("SELECT * FROM entries WHERE user_id='" + user_id + "' AND datetime='" + date + "'", function(err, result) {
+      if(result.rows.length == 0) {
+        sendTextMessage(user_id, "Sorry! I didn't find any entries for that date.");
+      }
+      else {
+        var str = "";
+        for(var i = 0; i < result.rows.length; i++) {
+          str += result.rows[i];
+        }
+        sendTextMessage(user_id, str);
+      }
+    });
+  });
+}
 app.set('port', (process.env.PORT || 5000))
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
@@ -230,11 +246,26 @@ app.post('/webhook/', function (req, res) {
                     sessions[sessionId].noEntry = true;
                     sessions[sessionId].repliedEntry = false;
                     sessions[sessionId].pickedOne = false;
+                    sessions[sessionId].pickedTwo = false;
                     sessions[sessionId].showedMenu = false;
+                    sessions[sessionId].noQuery = true;
                   }
               }
               else if(user.pickedTwo) {
-
+                if(user.noQuery) {
+                  sendTextMessage(fbid, "What would you like to lookup?");
+                  sessions[sessionId].noQuery = false;
+                }
+                else {
+                  var date_query = chrono.parseDate(text).toISOString().slice(0, 19).replace('T', ' ');
+                  retrieveEntries(fbid, date_query);
+                  sessions[sessionId].noEntry = true;
+                  sessions[sessionId].repliedEntry = false;
+                  sessions[sessionId].pickedOne = false;
+                  sessions[sessionId].pickedTwo = false;
+                  sessions[sessionId].showedMenu = false;
+                  sessions[sessionId].noQuery = true;
+                }
               }
               else {
 
