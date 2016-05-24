@@ -6,7 +6,7 @@ var request = require('request')
 var app = express()
 var pg = require('pg');
 var apiai = require('apiai');
-
+var async = require("async");
 var ai = apiai("9b5dfea507654930b8826b60738c892e");
 var token = "EAAYJxwknAucBAIQgU5VlZAZAfZAz0vovNKkfIxkt0OcpB93cNielJgPRktCZBXMTSKPzg4n8RLOZAZAYmAV6nSN4k0PMryDjAF4dZByBe4LtafeCrfZBHvQEZA1AAGVvaHz53L1jg1wEiapZAnhgNkJrbFmyYO5BryZBDI9tRbVCDDJFQZDZD";
 var WIT_TOKEN = "XNRX5EEFS7ROYRCPWVRBYFHDQCAF43ZH";
@@ -137,7 +137,7 @@ function sendTextMessage(sender, text, callback) {
             console.log('Error: ', response.body.error)
         }
         if(callback) {
-          setTimeout(callback(), 800);
+          callback();
         }
         
     })
@@ -160,7 +160,14 @@ app.post('/webhook/', function (req, res) {
             var fbid = sessions[sessionId].fbid;
             var user = sessions[sessionId];
             if(!user.pickedOne && !user.pickedTwo && !user.pickedThree) {
-              sendTextMessage(fbid, "Welcome to Scribe!", sendTextMessage(fbid, "What do you want to do today?", sendTextMessage(fbid, "1. Write an entry",sendTextMessage(fbid, "2. Query Entries",sendTextMessage(fbid, "3. Get a summary")))));
+              async.series([
+                  sendTextMessage(fbid, "Welcome to Scribe!"),
+                  sendTextMessage(fbid, "What do you want to do today?"),
+                  sendTextMessage(fbid, "1. Create an entry"),
+                  sendTextMessage(fbid, "2. Search through entries"),
+                  sendTextMessage(fbid, "3. Get a summary")
+              ]);
+            
             }
             else {
               if(user.pickedOne) {
