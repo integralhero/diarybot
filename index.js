@@ -63,12 +63,12 @@ const findOrCreateSession = (fbid) => {
             console.log("no records found ", result.rows.length);
 
             sendTextMessage(fbid, "Welcome to Scribe. Scribe is a place where you can store your thoughts and be more mindful on a daily basis");
-            client.query("INSERT INTO users (id, name) VALUES ('"+ curfbid + "', ')", function(err, result) {
+            client.query("INSERT INTO users (id, name) VALUES ($1,'test')", curfbid, function(err, result) {
               done();
               if (err)
                { console.error(err); response.send("Error " + err); }
               else {
-                sessions[sessionId].context.first_name = first_name;
+                //sessions[sessionId].context.first_name = first_name;
               }
             });
             
