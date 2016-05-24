@@ -100,7 +100,7 @@ function retrieveEntries(user_id, date) {
         for(var i = 0; i < result.rows.length; i++) {
           console.log(result.rows[i]);
           console.log(result.rows[i].text);
-          str += result.rows[i];
+          str += (result.rows[i].text + " ");
         }
         sendTextMessage(user_id, str);
       }
