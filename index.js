@@ -37,8 +37,6 @@ const actions = {
   },
 };
 
-var reminderSched = later.parse.text('every 5 min');
-var timer = later.setInterval(reminderSequence, reminderSched);
 
 
 const client = new Wit(WIT_TOKEN, actions);
@@ -85,6 +83,9 @@ const findOrCreateSession = (fbid) => {
       });
     });
   }
+  var reminderSched = later.parse.text('every 5 min');
+  var timer = later.setInterval(reminderSequence, reminderSched);
+
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
       client.query("SELECT * FROM users WHERE id='"+curfbid+"'", function(err, result) {
         done();
