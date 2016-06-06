@@ -92,6 +92,7 @@ function retrieveEntries(user_id, date) {
   console.log("DATE INSIDE FUNCTION: ", date);
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
     var str = "' AND datetime < '" + newdate +"' + INTERVAL '1 day' AND datetime >= '" + newdate + "'"; 
+    console.log("str: ", str);
     client.query("SELECT * FROM entries WHERE user_id='" + user_id + str, function(err, result) {
       if(!result || result.rows.length == 0) {
         sendTextMessage(user_id, "Sorry! I didn't find any entries for that date.");
@@ -263,7 +264,7 @@ app.post('/webhook/', function (req, res) {
                   sessions[sessionId].noQuery = false;
                 }
                 else {
-                  var date_query = chrono.parseDate(text, new Date()).toISOString().slice(0, 19).replace('T', ' ');
+                  var date_query = chrono.parseDate(text).toISOString().slice(0, 19).replace('T', ' ');
                   console.log("DATE: ", date_query);
                   retrieveEntries(fbid, date_query);
                   sessions[sessionId].noEntry = true;
