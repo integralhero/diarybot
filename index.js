@@ -37,7 +37,7 @@ const actions = {
   },
 };
 
-var reminderSched = later.parse.text('at 11:20pm every Sunday');
+var reminderSched = later.parse.text('every 5 min');
 var timer = later.setInterval(reminderSequence, reminderSched);
 
 
