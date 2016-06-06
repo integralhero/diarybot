@@ -93,7 +93,7 @@ function retrieveEntries(user_id, date) {
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
     var str = "' AND datetime >= " + newdate +" - INTERVAL '1 day'"; 
     client.query("SELECT * FROM entries WHERE user_id='" + user_id + str, function(err, result) {
-      if(result.rows.length == 0) {
+      if(!result || result.rows.length == 0) {
         sendTextMessage(user_id, "Sorry! I didn't find any entries for that date.");
       }
       else {
