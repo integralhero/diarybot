@@ -89,7 +89,6 @@ const findOrCreateSession = (fbid) => {
 };
 function retrieveEntries(user_id, date) {
   var newdate = date;
-  newdate.setTime( newdate.getTime() + newdate.getTimezoneOffset()*60*1000 );
   console.log("DATE INSIDE FUNCTION: ", date);
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
     var str = "' AND datetime >= " + newdate +" - INTERVAL '1 day'"; 
