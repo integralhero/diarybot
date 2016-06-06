@@ -11,6 +11,7 @@ var ai = apiai("9b5dfea507654930b8826b60738c892e");
 var token = "EAAYJxwknAucBAIQgU5VlZAZAfZAz0vovNKkfIxkt0OcpB93cNielJgPRktCZBXMTSKPzg4n8RLOZAZAYmAV6nSN4k0PMryDjAF4dZByBe4LtafeCrfZBHvQEZA1AAGVvaHz53L1jg1wEiapZAnhgNkJrbFmyYO5BryZBDI9tRbVCDDJFQZDZD";
 var WIT_TOKEN = "XNRX5EEFS7ROYRCPWVRBYFHDQCAF43ZH";
 var chrono = require('chrono-node');
+var later = require('later');
 var singlesession = "";
 var sessions = {};
 const Wit = require('node-wit').Wit;
@@ -35,6 +36,11 @@ const actions = {
     console.log(error.message);
   },
 };
+
+var reminderSched = later.parse.text('at 11:20pm every Sunday');
+var timer = later.setInterval(reminderSequence, reminderSched);
+
+
 const client = new Wit(WIT_TOKEN, actions);
 const findOrCreateSession = (fbid) => {
   var sessionId = "";
@@ -53,11 +59,37 @@ const findOrCreateSession = (fbid) => {
   var curfbid = sessions[sessionId].fbid;
   console.log("Facebook ID: ",fbid);
   console.log("Facebook ID2: ",curfbid);
+  function singleReminder(fbid) {
+    var sessionid = findOrCreateSession(fbid);
+    sessions[sessionid].showedMenu = false;
+    sessions[sessionid].pickedOne = true;
+    sessions[sessionid].noEntry = true;
+    sendTextMessage(fbid, "Hey, care to make an entry?");
+
+
+  }
+  function reminderSequence() {
+    pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+      client.query("SELECT * FROM users", function(err, results) {
+        if(results && results.rows) {
+          for(var i = 0; i < results.rows.length; i++) {
+            var person = results.rows[i];
+            if(person.id) {
+              singleReminder(person.id);
+            }
+          }
+        }
+        
+      });
+    });
+  }
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
       client.query("SELECT * FROM users WHERE id='"+curfbid+"'", function(err, result) {
         done();
-        if (err)
-         { console.error(err); response.send("Error " + err); }
+        if (err){ 
+          console.error(err); 
+          response.send("Error " + err); 
+        }
         else {
           
           if(result.rows.length === 0) { //no record found, create record
