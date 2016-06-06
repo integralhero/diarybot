@@ -60,6 +60,7 @@ const findOrCreateSession = (fbid) => {
   console.log("Facebook ID: ",fbid);
   console.log("Facebook ID2: ",curfbid);
   function singleReminder(fbid) {
+    console.log("MESSAGING USER REMINDER: ", fbid);
     var sessionid = findOrCreateSession(fbid);
     sessions[sessionid].showedMenu = false;
     sessions[sessionid].pickedOne = true;
@@ -69,6 +70,7 @@ const findOrCreateSession = (fbid) => {
 
   }
   function reminderSequence() {
+    console.log("REMINDER SEQUENCE ACTIVATED!");
     pg.connect(process.env.DATABASE_URL, function(err, client, done) {
       client.query("SELECT * FROM users", function(err, results) {
         if(results && results.rows) {
