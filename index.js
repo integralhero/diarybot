@@ -55,7 +55,7 @@ const findOrCreateSession = (fbid) => {
     sessions[sessionId] = {fbid: fbid, context: {}, noEntry: true, noQuery: true, repliedEntry: false, pickedOne: false, pickedTwo: false, pickedThree: false, showedMenu: false};
   }
   var curfbid = sessions[sessionId].fbid;
-  console.log("Facebook ID: ",fbid);
+  //console.log("Facebook ID: ",fbid);
   console.log("Facebook ID2: ",curfbid);
   function singleReminder(fbid) {
     console.log("MESSAGING USER REMINDER: ", fbid);
@@ -83,7 +83,7 @@ const findOrCreateSession = (fbid) => {
       });
     });
   }
-  var reminderSched = later.parse.text('every 5 min');
+  var reminderSched = later.parse.text('at 5:30pm every Friday');
   var timer = later.setInterval(reminderSequence, reminderSched);
 
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
@@ -297,6 +297,9 @@ app.post('/webhook/', function (req, res) {
                 if(user.noQuery) {
                   sendTextMessage(fbid, "What would you like to lookup?");
                   sessions[sessionId].noQuery = false;
+
+                  sessions[sessionId].pickedOne = false;
+                  sessions[sessionId].showedMenu = true;
                 }
                 else {
                   var date_query = chrono.parseDate(text).toISOString().slice(0, 19).replace('T', ' ');
