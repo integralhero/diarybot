@@ -88,9 +88,11 @@ const findOrCreateSession = (fbid) => {
   return sessionId;
 };
 function retrieveEntries(user_id, date) {
+  var newdate = date;
+  newdate.setTime( newdate.getTime() + newdate.getTimezoneOffset()*60*1000 );
   console.log("DATE INSIDE FUNCTION: ", date);
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-    var str = "' AND EXTRACT(YEAR FROM '" + date + "'::date) = EXTRACT(YEAR FROM datetime) AND EXTRACT(MONTH FROM datetime) = EXTRACT(MONTH FROM '" + date + "'::date) AND EXTRACT(DAY FROM datetime) = EXTRACT(DAY FROM '" + date + "'::date)"; 
+    var str = "' AND datetime >= " + newdate +" - INTERVAL '1 day'"; 
     client.query("SELECT * FROM entries WHERE user_id='" + user_id + str, function(err, result) {
       if(result.rows.length == 0) {
         sendTextMessage(user_id, "Sorry! I didn't find any entries for that date.");
