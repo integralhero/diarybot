@@ -1,0 +1,280 @@
+money
+money
+bill
+cash
+fund
+pay
+payment
+salary
+wage
+wealth
+banknote
+bankroll
+coin
+coinage
+finance
+fund
+loot
+riches
+wad
+bank
+fund
+stock
+treasury
+coffer
+savings
+acquisition
+bargain
+investment
+purchase
+closeout
+deal
+steal
+value
+good deal
+market
+procure
+purchase
+bargain for
+barter for
+contract for
+get in exchange
+go shopping
+invest in
+pay for
+shop for
+sign for
+auction
+market
+peddle
+trade
+bargain
+barter
+boost
+contract
+exchange
+hustle
+merchandise
+retail
+vend
+wholesale
+be in business
+clinch the deal
+close the deal
+deal in
+put across
+put up for sale
+
+leisure
+leisure
+convenience
+recreation
+relaxation
+chance
+ease
+freedom
+holiday
+intermission
+liberty
+opportunity
+pause
+quiet
+range
+recess
+repose
+respite
+rest
+retirement
+sabbatical
+scope
+time
+unemployment
+vacation
+idle hours
+leave of absence
+one's own sweet time
+requiescence
+spare moments
+spare time
+time off
+vacant hour
+relax
+calm
+lie down
+loosen up
+recline
+sit back
+soften
+unwind
+laze
+repose
+rest
+tranquilize
+unbend
+unlax
+breathe easy
+calm down
+collect oneself
+compose oneself
+cool off
+ease off
+feel at home
+hang loose
+knock off
+let oneself go
+make oneself at home
+put one's feet up
+settle back
+simmer down
+sit around
+stop work
+take a break
+take a breather
+take it easy
+take one's time
+take ten
+take time out
+dance
+caper
+carouse
+cavort
+clown
+dally
+disport
+divert
+frisk
+frolic
+gambol
+joke
+jump
+kibitz
+rejoice
+revel
+romp
+skip
+sport
+toy
+trifle
+amuse oneself
+be life of party
+carry on
+cut capers
+cut up
+entertain oneself
+fool around
+go on a spree
+horse around
+idle away
+kick up heels
+let go
+let loose
+let one's hair down
+make merry
+mess around
+show off
+bike
+run
+walk
+jog
+stroll
+exercise
+
+religion
+religion
+church
+creed
+cult
+denomination
+doctrine
+prayer
+ritual
+sect
+spirituality
+superstition
+theology
+communion
+devotion
+observance
+orthodoxy
+pietism
+piety
+preference
+religiosity
+rites
+sacrifice
+sanctification
+standards
+veneration
+higher power
+spiritual-mindedness
+chapel
+mosque
+parish
+sanctuary
+shrine
+synagogue
+temple
+abbey
+basilica
+bethel
+cathedral
+chancel
+chantry
+fold
+minster
+mission
+oratory
+tabernacle
+house of God
+house of prayer
+house of worship
+Lord's house
+sacellum
+Allah
+almighty
+creator
+daemon
+deity
+demigod
+demon
+divinity
+father
+holiness
+idol
+Jehovah
+lord
+maker
+master
+numen
+power
+providence
+soul
+spirit
+totem
+Yahweh
+Absolute Being
+All Knowing
+All Powerful
+Divine Being
+Holy Spirit
+infinite spirit
+Jah
+King of Kings
+omnipotent
+prime mover
+tutelary
+universal life force
+world spirit
+Christ
+Good Shepherd
+King of Kings
+Lamb of God
+lord
+Lord of Lords
+Messiah
+Prince of Peace
+redeemer
+savior
+Son of Man
+God
+

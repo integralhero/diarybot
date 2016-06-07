@@ -1,0 +1,25 @@
+todolist.txt
+Code base for journal entry summarization process
+
+1. Basic Statistics (# of words, entities)
+
+2. Topic
+- Create lists of tokens for each topic
+		- Finish code to calculate percentages based on appearances of tokens by topic
+	topic keywords:
+money
+leisure
+religion
+food
+work
+home
+relationships
+success
+travel
+nature
+
+3. Mood
+
+4. Pronoun Usage
+
+5. Tense Usage

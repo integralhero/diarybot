@@ -1,0 +1,32 @@
+I	I
+me	I
+myself	I
+my	I
+mine	I
+
+we	we
+us	we
+ourselves	we
+our	we
+ours	we
+
+you	you
+yourself	you
+your	you
+yours	you
+
+they	they
+them	they
+themselves	they
+their	they
+theirs	they
+
+he	he
+him	he
+his	he
+himself	he
+
+she she
+her she
+hers she
+herself she
