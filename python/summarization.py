@@ -12,6 +12,10 @@ import entry
 import processing
 from collections import Counter
 
+import nltk
+nltk.download("punkt")
+nltk.download("wordnet")
+
 """Return a tuple of # of words in text and dictionary of entity to # of appearances in text"""
 def get_statistics(text):
 	return
