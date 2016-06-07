@@ -14,6 +14,7 @@ var chrono = require('chrono-node');
 var later = require('later');
 var singlesession = "";
 var sessions = {};
+var summarization = require("./summarization");
 const Wit = require('node-wit').Wit;
 const actions = {
   say(sessionId, context, message, cb) {
@@ -379,3 +380,7 @@ app.get('/db', function (request, response) {
   });
 })
 
+summarization.get_pronoun_usage("I'm twelve years old and what is this? 
+  Who are you? Who am I? Why am I writing this story here?", function (results) {
+    console.log(results);
+  });
