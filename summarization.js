@@ -2,7 +2,7 @@ var PythonShell = require('python-shell');
 
 // Helper method
 function str_arr_to_object(results, callback) {
-	console.log(results);
+	// console.log(results);
 	var object = {};
 	for (var i = 0; i < results.length; i++)
 	{
