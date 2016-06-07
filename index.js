@@ -230,6 +230,25 @@ function sendTextMessage(sender, text, callback) {
         
     })
 }
+function processPronouns(obj) {
+  var highestVal = 0.0;
+  var highestKey = "";
+  Object.keys(obj).forEach(function(k,i) {
+    if(obj[k] >= highestVal) {
+      highestKey = k;
+      highestVal = obj[k];
+    }
+  });
+  var messages = {
+    "they": "You talked a lot about 'the other'",
+    "I": "You seemed to talk about yourself a lot last week.",
+    "he": "You talked frequently about one another person!",
+    "she":"You talked frequently about one another person!",
+    "you":"You addressed a second-person fairly often",
+    "we":"You talked about 'us' a whole bunch. Yay!"
+  };
+  return messages[highestKey];
+}
 function getSummaryForPastWeek(user_id) {
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
       var str = "' AND datetime >= now()::date - INTERVAL '7 days' AND datetime <= now()::date"; 
@@ -246,8 +265,8 @@ function getSummaryForPastWeek(user_id) {
             str += (result.rows[i].text + " ");
           }
           summarization.get_pronoun_usage(str, function (results) {
-              var pronouns =  JSON.stringify(results);
-              summarization.get_pronoun_usage(str, function (mood_res) {
+              var pronouns =  processPronouns(results);
+              summarization.get_mood(str, function (mood_res) {
                 var moods = JSON.stringify(mood_res);
                 sendTextMessage(user_id, pronouns + moods);
               });
