@@ -230,6 +230,32 @@ function sendTextMessage(sender, text, callback) {
         
     })
 }
+function getSummaryForPastWeek(user_id) {
+  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+      var str = "' AND datetime >= now()::date - INTERVAL '7 days' AND datetime <= now()::date"; 
+      console.log(" test str: ", str);
+      client.query("SELECT * FROM entries WHERE user_id='" + user_id + str, function(err, result) {
+        if(!result || result.rows.length == 0) {
+          sendTextMessage(user_id, "Sorry! No entries found for the past week.");
+        }
+        else {
+          var str = "";
+          for(var i = 0; i < result.rows.length; i++) {
+            console.log(result.rows[i]);
+            console.log(result.rows[i].text);
+            str += (result.rows[i].text + " ");
+          }
+          summarization.get_pronoun_usage(str, function (results) {
+              var pronouns =  JSON.stringify(results);
+              summarization.get_pronoun_usage(str, function (mood_res) {
+                var moods = JSON.stringify(mood_res);
+                sendTextMessage(user_id, pronouns + moods);
+              });
+          });
+        }
+      });
+    });
+}
 // Spin up the server
 app.listen(app.get('port'), function() {
     console.log('running on port', app.get('port'))
@@ -339,7 +365,14 @@ app.post('/webhook/', function (req, res) {
                 }
               }
               else {
-
+                getSummaryForPastWeek(fbid);
+                sessions[sessionId].noEntry = true;
+                sessions[sessionId].repliedEntry = false;
+                sessions[sessionId].pickedOne = false;
+                sessions[sessionId].pickedTwo = false;
+                sessions[sessionId].pickedThree = false;
+                sessions[sessionId].showedMenu = false;
+                sessions[sessionId].noQuery = true;
               }
               
             }
