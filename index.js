@@ -240,12 +240,31 @@ function processPronouns(obj) {
     }
   });
   var messages = {
-    "they": "You talked a lot about 'the other'",
+    "they": "You talked a lot about 'the other'.",
     "I": "You seemed to talk about yourself a lot last week.",
     "he": "You talked frequently about one another person!",
     "she":"You talked frequently about one another person!",
     "you":"You addressed a second-person fairly often",
     "we":"You talked about 'us' a whole bunch. Yay!"
+  };
+  return messages[highestKey];
+}
+function processMood(obj) {
+  var highestVal = 0.0;
+  var highestKey = "";
+  Object.keys(obj).forEach(function(k,i) {
+    if(obj[k] >= highestVal) {
+      highestKey = k;
+      highestVal = obj[k];
+    }
+  });
+  var messages = {
+    "disgust": "You seemed very disgusted about something.",
+    "fear": "Do not be afraid! Take risks, make mistakes!",
+    "joy": "Yay! Sounds like you had a good week.",
+    "surprise":"Wow! Seems like a lot caught you by surprise last week.",
+    "sadness":"Seems like last week wasn't the best. Tomorrow's a new day!",
+    "anger":"Things seemed tense. Find some time to settle down."
   };
   return messages[highestKey];
 }
@@ -267,8 +286,9 @@ function getSummaryForPastWeek(user_id) {
           summarization.get_pronoun_usage(str, function (results) {
               var pronouns =  processPronouns(results);
               summarization.get_mood(str, function (mood_res) {
-                var moods = JSON.stringify(mood_res);
-                sendTextMessage(user_id, pronouns + moods);
+                var moods = processMood(mood_res);
+                conosle.log(mood_res);
+                sendTextMessage(user_id, pronouns + mood_res);
               });
           });
         }
@@ -436,7 +456,7 @@ app.get('/db', function (request, response) {
 //   "Who are you? Who am I? Why am I writing this story here?", function (results) {
 //     console.log(results);
 //   });
-// summarization.get_mood("I hate things. I am surprised by things. "
-//   + "I get riled up by things. I have a quick temp, sorry.", function (results) {
-//     console.log(results);
-//   });
+summarization.get_mood("I hate things. I am surprised by things. "
+  + "I get riled up by things. I have a quick temp, sorry.", function (results) {
+    console.log("TEST RESULTS: ", results);
+  });
