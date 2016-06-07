@@ -380,7 +380,7 @@ app.get('/db', function (request, response) {
   });
 })
 
-summarization.get_pronoun_usage("I'm twelve years old and what is this? 
-  Who are you? Who am I? Why am I writing this story here?", function (results) {
+summarization.get_pronoun_usage("I'm twelve years old and what is this? " +
+  "Who are you? Who am I? Why am I writing this story here?", function (results) {
     console.log(results);
   });
