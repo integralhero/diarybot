@@ -9,6 +9,9 @@ from collections import defaultdict
 from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.stem.porter import PorterStemmer
 
+nltk.download("punkt")
+nltk.download("wordnet")
+
 """Create a list of sentences from the text in the form of a list of token arrays"""
 def tokenize_text(text):
 	return [nltk.word_tokenize(sent) for sent in nltk.sent_tokenize(text)]
