@@ -32,20 +32,20 @@ module.exports = {
 			if (err) throw err;
 			str_arr_to_object(results, callback);
 		});
-	}
+	},
 
 	// text is the string of the entry
 	// callback is a callback function that takes in the object of pronoun usage
 	// returns an object of mood keynames (joy, surprise, disgust, fear, anger, sadness) to percentage present
 	get_mood: function (text, callback) {
-	var options = {
-		scriptPath: './python',
-		args: ["mood", text]
-	};
-	var filename = 'summarization.py';
-	PythonShell.run(filename, options, function (err, results) {
-		if (err) throw err;
-		str_arr_to_object(results, callback);
-	});
-}
+		var options = {
+			scriptPath: './python',
+			args: ["mood", text]
+		};
+		var filename = 'summarization.py';
+		PythonShell.run(filename, options, function (err, results) {
+			if (err) throw err;
+			str_arr_to_object(results, callback);
+		});
+	}
 };
