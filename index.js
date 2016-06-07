@@ -288,7 +288,7 @@ function getSummaryForPastWeek(user_id) {
               summarization.get_mood(str, function (mood_res) {
                 var moods = processMood(mood_res);
                 console.log(mood_res);
-                sendTextMessage(user_id, pronouns + mood_res);
+                sendTextMessage(user_id, pronouns + moods);
               });
           });
         }
