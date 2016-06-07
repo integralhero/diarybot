@@ -4,6 +4,7 @@
 # Methods for loading data specific to this project
 
 import io
+from collections import defaultdict
 
 """Open the keyname sectioned file and return dictionary of keyname to keyname's list of strings"""
 def load_keyname_sectioned_text(file_name):
@@ -38,3 +39,11 @@ def load_simple_set(file_name):
 		for line in f:
 			result.append(line.rstrip('\n'))
 		return set(result)
+
+def load_tab_separated_list(file_name):
+	with io.open(file_name, 'r', encoding='utf8') as f:
+		result = defaultdict(lambda: [])
+		for line in f:
+			keyValue = line.rstrip('\n').replace("_", " ").split('\t')
+			result[keyValue[1]].append(keyValue[0])
+		return dict(result)

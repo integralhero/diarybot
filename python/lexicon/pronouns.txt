@@ -24,3 +24,15 @@ them
 themselves
 their
 theirs
+
+he
+he
+him
+his
+himself
+
+she
+she
+her
+hers
+herself

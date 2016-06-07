@@ -384,3 +384,7 @@ summarization.get_pronoun_usage("I'm twelve years old and what is this? " +
   "Who are you? Who am I? Why am I writing this story here?", function (results) {
     console.log(results);
   });
+summarization.get_mood("I hate things. I am surprised by things. "
+  + "I get riled up by things. I have a quick temp, sorry." function (results) {
+    console.log(results);
+  });

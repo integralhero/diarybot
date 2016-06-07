@@ -14,6 +14,10 @@ PATH_TOPICS = os.path.join(FOLDER_LEXICON, FILE_TOPICS)
 FILE_PRONOUNS = 'pronouns.txt'
 PATH_PRONOUNS = os.path.join(FOLDER_LEXICON, FILE_PRONOUNS)
 
+# A file with emotion word and emotion separated by tab
+FILE_EMOTIONS = 'emotions.txt'
+PATH_EMOTIONS = os.path.join(FOLDER_LEXICON, FILE_EMOTIONS)
+
 #
 FOLDER_DATA = 'data'
 FOLDER_BY_DAY = 'by_day'

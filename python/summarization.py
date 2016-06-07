@@ -20,9 +20,15 @@ def get_statistics(text):
 def get_topic(text, topicsMap = None):
 	if not topicsMap: topicsMap = ld.load_keyname_sectioned_text(settings.PATH_TOPICS)
 	entryObj = entry.Entry(text, topicsMap)
-	entryObj.print_matches()
+	# entryObj.print_matches()
 	return entryObj.topicPercentages
 	# return entry.Entry(text, topicsMap).topicPercentages
+
+def get_mood(text, topicsMap = None):
+	if not topicsMap: topicsMap = ld.load_tab_separated_list(settings.PATH_EMOTIONS)
+	entryObj = entry.Entry(text, topicsMap)
+	# entryObj.print_matches()
+	return entryObj.topicPercentages
 
 def get_pronoun_usage(text, topicsMap = None):
 	if not topicsMap: topicsMap = ld.load_keyname_sectioned_text(settings.PATH_PRONOUNS)
@@ -56,6 +62,8 @@ if __name__ == '__main__':
 			print_dictionary(get_pronoun_usage(sys.argv[2]))
 		elif (sys.argv[1] == "common"):
 			print(get_most_common_words(sys.argv[2], int(sys.argv[3])))
+		elif (sys.argv[1] == "mood"):
+			print_dictionary(get_mood(sys.argv[2]))
 		else:
 			print ("summary_type must be valid")
 	else:
