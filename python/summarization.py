@@ -2,7 +2,8 @@
 # Author: Marcus Jackson
 
 import os
-os.chdir(".\python")
+import os.path
+os.chdir(os.path.join(".", "python"))
 import sys
 sys.path.insert(0, "module")
 import loaddata as ld
