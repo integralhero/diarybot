@@ -385,6 +385,6 @@ summarization.get_pronoun_usage("I'm twelve years old and what is this? " +
     console.log(results);
   });
 summarization.get_mood("I hate things. I am surprised by things. "
-  + "I get riled up by things. I have a quick temp, sorry." function (results) {
+  + "I get riled up by things. I have a quick temp, sorry.", function (results) {
     console.log(results);
   });
