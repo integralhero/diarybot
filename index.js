@@ -122,27 +122,50 @@ const findOrCreateSession = (fbid) => {
     });
   return sessionId;
 };
-function retrieveEntries(user_id, date) {
+function retrieveEntries(user_id, date, end_date) {
   var newdate = date;
   console.log("DATE INSIDE FUNCTION: ", date);
-  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-    var str = "' AND datetime < '" + newdate +"'::date + INTERVAL '1 day' AND datetime >= '" + newdate + "'::date"; 
-    console.log(" test str: ", str);
-    client.query("SELECT * FROM entries WHERE user_id='" + user_id + str, function(err, result) {
-      if(!result || result.rows.length == 0) {
-        sendTextMessage(user_id, "Sorry! I didn't find any entries for that date.");
-      }
-      else {
-        var str = "";
-        for(var i = 0; i < result.rows.length; i++) {
-          console.log(result.rows[i]);
-          console.log(result.rows[i].text);
-          str += (result.rows[i].text + " ");
+  if(end_date) {
+    pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+      var str = "' AND datetime <= '" + end_date +"::date AND datetime >= '" + newdate + "'::date"; 
+      console.log(" test str: ", str);
+      client.query("SELECT * FROM entries WHERE user_id='" + user_id + str, function(err, result) {
+        if(!result || result.rows.length == 0) {
+          sendTextMessage(user_id, "Sorry! I didn't find any entries for that date.");
         }
-        sendTextMessage(user_id, str);
-      }
+        else {
+          var str = "";
+          for(var i = 0; i < result.rows.length; i++) {
+            console.log(result.rows[i]);
+            console.log(result.rows[i].text);
+            str += (result.rows[i].text + " ");
+          }
+          sendTextMessage(user_id, str);
+        }
+      });
     });
-  });
+  }
+  else {
+    pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+      var str = "' AND datetime < '" + newdate +"'::date + INTERVAL '1 day' AND datetime >= '" + newdate + "'::date"; 
+      console.log(" test str: ", str);
+      client.query("SELECT * FROM entries WHERE user_id='" + user_id + str, function(err, result) {
+        if(!result || result.rows.length == 0) {
+          sendTextMessage(user_id, "Sorry! I didn't find any entries for that date.");
+        }
+        else {
+          var str = "";
+          for(var i = 0; i < result.rows.length; i++) {
+            console.log(result.rows[i]);
+            console.log(result.rows[i].text);
+            str += (result.rows[i].text + " ");
+          }
+          sendTextMessage(user_id, str);
+        }
+      });
+    });
+  }
+  
 }
 app.set('port', (process.env.PORT || 5000))
 app.set('views', __dirname + '/views');
